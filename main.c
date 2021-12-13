@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #define MAX_PRODUCT_NAME_LEN 30
 
@@ -33,7 +34,7 @@ int readSalesFile(FILE* fp, struct ProductSalesList* prodList[], struct DailySal
   char productName[MAX_PRODUCT_NAME_LEN];
 
   while (!feof(fp)) {
-    valuesRead = fscanf_s(fp, "%[^/]/%d/%lf/%d/%d/%d%*c",
+    valuesRead = fscanf(fp, "%[^/]/%d/%lf/%d/%d/%d%*c",
         productName, &saleRec.numberSold, &saleRec.salePrice,
         &saleRec.saleDate.month, &saleRec.saleDate.day,
         &saleRec.saleDate.year);
@@ -52,5 +53,11 @@ void addSale(
     char productName[MAX_PRODUCT_NAME_LEN], 
     struct SingleSaleRecord *saleRec
 ) {
+  // somethine; 
+}
+
+int main(void) {
+  printf("Main");
   
+  return 0;
 }
