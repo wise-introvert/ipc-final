@@ -15,14 +15,19 @@ struct SingleSaleRecord {
 };
 
 struct ProductSalesList {
-  struct SingleSaleRecord sales[100];
+  double revenue;
+  int unitsSold;
+  char productName[MAX_PRODUCT_NAME_LEN];
 };
 
-struct DailySalesList {};
+struct DailySalesList {
+  double revenue;
+  struct SaleDate saleDate;
+};
 
-void addSale(struct ProductSalesList *prodList, struct DailySalesList *dailySales, char productName[MAX_PRODUCT_NAME_LEN], struct SingleSaleRecord *saleRec);
+void addSale(struct ProductSalesList *prodList[], struct DailySalesList *dailySales[], char productName[MAX_PRODUCT_NAME_LEN], struct SingleSaleRecord *saleRec);
 
-int readSalesFile(FILE* fp, struct ProductSalesList* prodList, struct DailySalesList* dailySales) {
+int readSalesFile(FILE* fp, struct ProductSalesList* prodList[], struct DailySalesList* dailySales[]) {
   int numberSalesRead = 0, valuesRead;
   struct SingleSaleRecord saleRec = { 0 };
   char productName[MAX_PRODUCT_NAME_LEN];
@@ -42,10 +47,10 @@ int readSalesFile(FILE* fp, struct ProductSalesList* prodList, struct DailySales
 }
 
 void addSale(
-    struct ProductSalesList *prodList, 
-    struct DailySalesList *dailySales, 
+    struct ProductSalesList *prodList[], 
+    struct DailySalesList *dailySales[], 
     char productName[MAX_PRODUCT_NAME_LEN], 
     struct SingleSaleRecord *saleRec
 ) {
-
+  
 }
