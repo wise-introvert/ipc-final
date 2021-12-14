@@ -144,6 +144,7 @@ void showSaleByProduct(struct ProductSalesList productList[], int N) {
   for (x = 0; x < pos; x++) {
     printf("\n %20s    %3d %7.2f", temp[x].productName, temp[x].saleRec.numberSold, temp[x].saleRec.salePrice);
   }
+  printf("\n");
 }
 
 /* menu system for UI */
@@ -155,7 +156,7 @@ char menu() {
   printf("\n3-View Sales by Date sorted by revenue");
   printf("\n0-Exit\n");
   fflush(stdin);
-  scanf("%c", & choice);
+  scanf(" %c", & choice);
   while (choice < '0' || choice > '3') {
     printf("Enter a valid integer between 0 and 3: ");
     scanf(" %c", & choice);
@@ -170,6 +171,7 @@ void showDailySale(struct DailySalesList * dailySales) {
   for (x = 0; dailySales[x].revenue != 0.0; x++) {
     printf("\n %9.2f   %02d     %02d  %4d", dailySales[x].revenue, dailySales[x].saleDate.day, dailySales[x].saleDate.month, dailySales[x].saleDate.year);
   }
+  printf("\n");
 }
 
 /* The main() function */
@@ -189,7 +191,7 @@ int main() {
       0
     };
     totalItemsInList = readSalesFile(f, pList, dSales);
-    printf("\n*** Seneca Gardens ***");
+    printf("\n****** Seneca Gardens ******");
     do {
       choice = menu(); // show menu
       switch (choice) // switch on the user's choice
@@ -201,7 +203,6 @@ int main() {
         showSaleByProduct(pList, totalItemsInList);
         break;
       case '3':
-
         sortSaleOnRevenue(dSales);
         showDailySale(dSales);
         break;
