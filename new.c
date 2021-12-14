@@ -1,13 +1,26 @@
+/**
+ *************** IPC FINALS Q1 ***************
+ * Group Members
+ * 1. Bachitar Singh
+ *      ID: 130504210
+ *      Email: Bsingh325@myseneca.ca
+ * 2. Fardeen Sohil Panjwani
+ *      ID: 119588218
+ *      Email: fspanjwani@myseneca.ca
+ * 3. Yashita Kapoor
+ *      ID: 121497218
+ *      Email: ykapoor3@myseneca.ca
+ */
 #define _CRT_SECURE_NO_WARNINGS
 
 #include<stdio.h>
+
 #include<string.h>
+
 #include<stdlib.h>
 
 #define MAX_PRODUCT_NAME_LEN 25
 #define MAX_PRODUCT_SIZE 25
-//Declaration of struct SingleSaleRecord, which holds the information of one transaction
-// the data part of it is taken as per the data specified in the text file.
 struct SingleSaleRecord {
   int numberSold;
   double salePrice;
@@ -17,90 +30,78 @@ struct SingleSaleRecord {
   saleDate;
 };
 
-// Declaration of struct ProductSalesList
-// data part is taken as per the data given in already provided function  and sample output
 struct ProductSalesList {
   char productName[MAX_PRODUCT_NAME_LEN];
-  struct SingleSaleRecord saleRec;
+  struct SingleSaleRecord saleRecord;
 };
-
-// Declaration of struct DailySalesList
-// data part is taken as per the data given in already provided function and sample output
 
 struct DailySalesList {
   struct Date saleDate;
   double revenue;
 };
 
-void addSale(struct ProductSalesList * pList, struct DailySalesList * dSales, char * pName, struct SingleSaleRecord * sRec) {
+void addSale(struct ProductSalesList * prodList, struct DailySalesList * salesList, char * productName, struct SingleSaleRecord * salesRecord) {
   int x;
-  for (x = 0; pList[x].productName[0] != '\0'; x++) // finding count of elements in the list
+  for (x = 0; prodList[x].productName[0] != '\0'; x++)
   ;
 
-  strcpy(pList[x].productName, pName); // assigning new product name info to xth index of list
-  pList[x].saleRec = * sRec; // assigning sale record information at xth index of the list
+  strcpy(prodList[x].productName, productName);
+  prodList[x].saleRecord = * salesRecord;
 
-  for (x = 0; dSales[x].revenue != 0.0; x++) // Adding revenue to daily das;e record
-  {
-    if (dSales[x].saleDate.day == sRec -> saleDate.day &&
-      dSales[x].saleDate.month == sRec -> saleDate.month &&
-      dSales[x].saleDate.year == sRec -> saleDate.year) {
-      dSales[x].revenue += sRec -> salePrice;
+  for (x = 0; salesList[x].revenue != 0.0; x++) {
+    if (salesList[x].saleDate.day == salesRecord -> saleDate.day &&
+      salesList[x].saleDate.month == salesRecord -> saleDate.month &&
+      salesList[x].saleDate.year == salesRecord -> saleDate.year) {
+      salesList[x].revenue += salesRecord -> salePrice;
       break;
     }
   }
 
-  if (dSales[x].revenue == 0.0) // if the date not already added in daily sale then add new record in daily sale list
-  {
-    dSales[x].saleDate = sRec -> saleDate;
-    dSales[x].revenue = sRec -> salePrice;
+  if (salesList[x].revenue == 0.0) {
+    salesList[x].saleDate = salesRecord -> saleDate;
+    salesList[x].revenue = salesRecord -> salePrice;
   }
 }
 
-/**   Below code already provided at assignement */
-int readSalesFile(FILE* fp, struct ProductSalesList * prodList, struct DailySalesList * dailySales) {
+int reasalesListFile(FILE * fp, struct ProductSalesList * prodList, struct DailySalesList * dailySales) {
 
   int numberSalesRead = 0, valuesRead;
-  struct SingleSaleRecord saleRec = {
+  struct SingleSaleRecord saleRecord = {
     0
   };
   char productName[MAX_PRODUCT_NAME_LEN];
 
   while (!feof(fp)) {
     valuesRead = fscanf(fp, "%[^/]/%d/%lf/%d/%d/%d%*c",
-      productName, & saleRec.numberSold, & saleRec.salePrice, &
-      saleRec.saleDate.month, & saleRec.saleDate.day, &
-      saleRec.saleDate.year);
+      productName, & saleRecord.numberSold, & saleRecord.salePrice, &
+      saleRecord.saleDate.month, & saleRecord.saleDate.day, &
+      saleRecord.saleDate.year);
     if (valuesRead > 0) {
-      addSale(prodList, dailySales, productName, & saleRec);
+      addSale(prodList, dailySales, productName, & saleRecord);
       numberSalesRead++;
     }
   }
   return numberSalesRead;
 }
 
-/* show ProductList*/
-void showpList(struct ProductSalesList * pList, int N) {
+void showprodList(struct ProductSalesList * prodList, int N) {
   int x;
   printf("\nDAY MONTH YEAR                        PRODUCT #SOLD   PRICE\n");
   for (x = 0; x < N; x++) {
-    printf(" %02d    %02d %4d %30s  %4d    %.2f\n", pList[x].saleRec.saleDate.day,
-      pList[x].saleRec.saleDate.month, pList[x].saleRec.saleDate.year,
-      pList[x].productName, pList[x].saleRec.numberSold, pList[x].saleRec.salePrice);
+    printf(" %02d    %02d %4d %30s  %4d    %.2f\n", prodList[x].saleRecord.saleDate.day,
+      prodList[x].saleRecord.saleDate.month, prodList[x].saleRecord.saleDate.year,
+      prodList[x].productName, prodList[x].saleRecord.numberSold, prodList[x].saleRecord.salePrice);
   }
 }
 
-// sorting daily sale on the descending order of revenue
 void sortSaleOnRevenue(struct DailySalesList * dailySale) {
   int fix, comp, pos;
 
   struct DailySalesList temp;
   int Count;
 
-  // finding count of items in the list
   for (Count = 0; dailySale[Count].revenue != 0.0; Count++)
   ;
-  // Sorting list using selection sort
   for (fix = 0; fix < Count; fix++) {
     pos = fix;
     for (comp = fix + 1; comp < Count; comp++) {
@@ -108,19 +109,17 @@ void sortSaleOnRevenue(struct DailySalesList * dailySale) {
         pos = comp;
     }
 
-    // swapping pos index element with fix index element
     temp = dailySale[fix];
     dailySale[fix] = dailySale[pos];
     dailySale[pos] = temp;
   }
 }
 
-/* showing product sale details arranged on product name */
 void showSaleByProduct(struct ProductSalesList productList[], int N) {
 
   struct ProductSalesList temp[MAX_PRODUCT_SIZE] = {
     0
-  }; // initialized by 0
+  };
   int x, y, pos, index = 0;
   int isFound = 0;
 
@@ -135,19 +134,18 @@ void showSaleByProduct(struct ProductSalesList productList[], int N) {
       temp[pos] = productList[x];
       pos++;
     } else {
-      temp[index].saleRec.numberSold += productList[x].saleRec.numberSold;
-      temp[index].saleRec.salePrice += productList[x].saleRec.salePrice;
+      temp[index].saleRecord.numberSold += productList[x].saleRecord.numberSold;
+      temp[index].saleRecord.salePrice += productList[x].saleRecord.salePrice;
     }
   }
 
   printf("\n              PRODUCT  #SOLD REVENUE");
   for (x = 0; x < pos; x++) {
-    printf("\n %20s    %3d %7.2f", temp[x].productName, temp[x].saleRec.numberSold, temp[x].saleRec.salePrice);
+    printf("\n %20s    %3d %7.2f", temp[x].productName, temp[x].saleRecord.numberSold, temp[x].saleRecord.salePrice);
   }
   printf("\n");
 }
 
-/* menu system for UI */
 char menu() {
   char choice;
   printf("\nSelect one of the following options:");
@@ -164,7 +162,6 @@ char menu() {
   return choice;
 }
 
-/* Displaying daily sale data */
 void showDailySale(struct DailySalesList * dailySales) {
   int x;
   printf("\n   REVENUE  DAY  MONTH  YEAR");
@@ -174,37 +171,35 @@ void showDailySale(struct DailySalesList * dailySales) {
   printf("\n");
 }
 
-/* The main() function */
 int main() {
   FILE * f;
   int x;
   char choice;
   int totalItemsInList = 0;
-  f = fopen("SampleData.txt", "r"); /* Opening the data file */
+  f = fopen("SampleData.txt", "r");
   if (f == NULL)
     printf("\n SampleData.txt File not found ");
   else {
-    struct ProductSalesList pList[MAX_PRODUCT_SIZE] = {
+    struct ProductSalesList prodList[MAX_PRODUCT_SIZE] = {
       0
     };
-    struct DailySalesList dSales[MAX_PRODUCT_SIZE] = {
+    struct DailySalesList salesList[MAX_PRODUCT_SIZE] = {
       0
     };
-    totalItemsInList = readSalesFile(f, pList, dSales);
+    totalItemsInList = reasalesListFile(f, prodList, salesList);
     printf("\n****** Seneca Gardens ******");
     do {
-      choice = menu(); // show menu
-      switch (choice) // switch on the user's choice
-      {
+      choice = menu();
+      switch (choice) {
       case '1':
-        showpList(pList, totalItemsInList);
+        showprodList(prodList, totalItemsInList);
         break;
       case '2':
-        showSaleByProduct(pList, totalItemsInList);
+        showSaleByProduct(prodList, totalItemsInList);
         break;
       case '3':
-        sortSaleOnRevenue(dSales);
-        showDailySale(dSales);
+        sortSaleOnRevenue(salesList);
+        showDailySale(salesList);
         break;
       }
 
