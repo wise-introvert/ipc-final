@@ -84,7 +84,7 @@ int reasalesListFile(FILE * fp, struct ProductSalesList * prodList, struct Daily
   return numberSalesRead;
 }
 
-void showprodList(struct ProductSalesList * prodList, int N) {
+void getByDate(struct ProductSalesList * prodList, int N) {
   int x;
   printf("\nDAY MONTH YEAR                        PRODUCT #SOLD   PRICE\n");
   for (x = 0; x < N; x++) {
@@ -94,7 +94,7 @@ void showprodList(struct ProductSalesList * prodList, int N) {
   }
 }
 
-void sortSaleOnRevenue(struct DailySalesList * dailySale) {
+void sort(struct DailySalesList * dailySale) {
   int fix, comp, pos;
 
   struct DailySalesList temp;
@@ -115,7 +115,7 @@ void sortSaleOnRevenue(struct DailySalesList * dailySale) {
   }
 }
 
-void showSaleByProduct(struct ProductSalesList productList[], int N) {
+void getByProduct(struct ProductSalesList productList[], int N) {
 
   struct ProductSalesList temp[MAX_PRODUCT_SIZE] = {
     0
@@ -162,7 +162,7 @@ char menu() {
   return choice;
 }
 
-void showDailySale(struct DailySalesList * dailySales) {
+void getDailySales(struct DailySalesList * dailySales) {
   int x;
   printf("\n   REVENUE  DAY  MONTH  YEAR");
   for (x = 0; dailySales[x].revenue != 0.0; x++) {
@@ -192,20 +192,21 @@ int main() {
       choice = menu();
       switch (choice) {
       case '1':
-        showprodList(prodList, totalItemsInList);
+        getByDate(prodList, totalItemsInList);
         break;
       case '2':
-        showSaleByProduct(prodList, totalItemsInList);
+        getByProduct(prodList, totalItemsInList);
         break;
       case '3':
-        sortSaleOnRevenue(salesList);
-        showDailySale(salesList);
+        sort(salesList);
+        getDailySales(salesList);
         break;
       }
 
     } while (choice != '0');
   }
 
+  printf("Good Bye");
   fclose(f);
   return (0);
 }
